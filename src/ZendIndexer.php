@@ -18,7 +18,7 @@
  *
  *
  */
-namespace oat\tao\zendsearch
+namespace oat\tao\zendsearch;
 
 use oat\tao\model\search\Search;
 use tao_models_classes_FileSourceService;
