@@ -61,7 +61,7 @@ class ZendSearch extends Configurable implements Search
     public function query($queryString, $rootClass = null) {
         try {
             if (!is_null($rootClass)) {
-                $queryString = rtrim($queryString, ' ').' AND type_r:'.str_replace(':', '\\:', $rootClass->getUri());
+                $queryString = '('.trim($queryString, ' ').') AND type_r:'.str_replace(':', '\\:', $rootClass->getUri());
             }
             $hits = $this->getIndex()->find($queryString);
         } catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {
