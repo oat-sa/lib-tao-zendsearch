@@ -27,6 +27,7 @@ use ZendSearch\Lucene\Lucene;
 use ZendSearch\Lucene\Document;
 use ZendSearch\Lucene\Search\QueryHit;
 use oat\tao\model\search\Index;
+use oat\tao\model\TaoOntology;
 
 /**
  * Zend Index helper 
@@ -76,7 +77,7 @@ class ZendIndexer
             $toDo[] = $class->getUri();
         }
         
-        $done = array(RDFS_RESOURCE, TAO_OBJECT_CLASS);
+        $done = array(RDFS_RESOURCE, TaoOntology::OBJECT_CLASS);
         $toDo = array_diff($toDo, $done);
         
         $classUris = array();
@@ -97,7 +98,7 @@ class ZendIndexer
     
     protected function indexProperty(Document $document, \core_kernel_classes_Property $property)
     {
-        $indexes = $property->getPropertyValues(new \core_kernel_classes_Property(INDEX_PROPERTY));
+        $indexes = $property->getPropertyValues(new \core_kernel_classes_Property(TaoOntology::INDEX_PROPERTY));
         foreach ($indexes as $indexUri) {
             $index = new Index($indexUri);
             $id = $index->getIdentifier();
