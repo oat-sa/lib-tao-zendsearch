@@ -77,7 +77,7 @@ class ZendIndexer
             $toDo[] = $class->getUri();
         }
         
-        $done = array(RDFS_RESOURCE, TaoOntology::OBJECT_CLASS);
+        $done = array(RDFS_RESOURCE, TaoOntology::OBJECT_CLASS_URI);
         $toDo = array_diff($toDo, $done);
         
         $classUris = array();
