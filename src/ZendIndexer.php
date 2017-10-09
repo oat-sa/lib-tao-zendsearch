@@ -27,7 +27,7 @@ use ZendSearch\Lucene\Lucene;
 use ZendSearch\Lucene\Document;
 use ZendSearch\Lucene\Search\QueryHit;
 use oat\tao\model\search\Index;
-
+use oat\generis\model\OntologyRdfs;
 /**
  * Zend Index helper 
  * 
@@ -76,7 +76,7 @@ class ZendIndexer
             $toDo[] = $class->getUri();
         }
         
-        $done = array(RDFS_RESOURCE, TAO_OBJECT_CLASS);
+        $done = array(OntologyRdfs::RDFS_RESOURCE, TAO_OBJECT_CLASS);
         $toDo = array_diff($toDo, $done);
         
         $classUris = array();
