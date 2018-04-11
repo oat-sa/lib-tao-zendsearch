@@ -20,6 +20,7 @@
  */
 namespace oat\tao\zendsearch;
 
+use oat\tao\model\search\ResultSet;
 use oat\tao\model\search\Search;
 use tao_models_classes_FileSourceService;
 use common_Logger;
@@ -53,12 +54,17 @@ class ZendSearch extends Configurable implements Search
         }
         return $this->index;
     }
-    
+
+
     /**
      * (non-PHPdoc)
      * @see \oat\tao\model\search\Search::query()
      */
-    public function query($queryString, $rootClass = null) {
+    public function query( $queryString, $rootClass = null, $start = 0, $count = 10 ){
+
+        //provide side affect as incorrect reporting of total results but increase response time
+        Lucene::setResultSetLimit($start+$count+1);
+
         try {
             if (!is_null($rootClass)) {
                 $queryString = '('.trim($queryString, ' ').') AND type_r:'.str_replace(':', '\\:', $rootClass->getUri());
@@ -67,13 +73,14 @@ class ZendSearch extends Configurable implements Search
         } catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {
             throw new SyntaxException($queryString, __('There is an error in your search query, system returned: %s', $e->getMessage()));
         }
-        
+
         $ids = array();
         foreach ($hits as $hit) {
             $ids[] = $hit->getDocument()->getField('uri')->getUtf8Value();
         }
-        
-        return $ids;
+
+        // currently doesn't support normal offsetting on results
+        return new ResultSet(array_slice($ids, $start, $count), count($ids));
     }
     
     /**
